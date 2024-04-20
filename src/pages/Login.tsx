@@ -1,5 +1,8 @@
+import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {
+  Button,
+  Image,
   KeyboardAvoidingView,
   SafeAreaView,
   ScrollView,
@@ -12,9 +15,21 @@ import {
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 export default function Login() {
+  const navigation = useNavigation();
   const isDarkMode = useColorScheme() === 'dark';
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [, setLogin] = useState(false);
+  const [error, setError] = useState(false);
+
+  function handleLogin() {
+    if (email && password) {
+      setLogin(true);
+      setError(false);
+    } else {
+      setError(true);
+    }
+  }
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -23,8 +38,11 @@ export default function Login() {
           style={{backgroundColor: '#372775'}}
           contentContainerStyle={{flexGrow: 1}}>
           <View style={styles.container}>
-            <Text style={styles.sectionTitle}>Titulo aqui</Text>
-            <View>
+            <View style={styles.containerHeader}>
+              <Text style={styles.sectionTitle}>Satisfying.you</Text>
+              <Image source={require('../assets/logo.png')} />
+            </View>
+            <View style={styles.containerMargin}>
               <Text style={styles.textInput}>Email</Text>
               <TextInput
                 style={styles.input}
@@ -40,6 +58,33 @@ export default function Login() {
                 value={password}
                 placeholder="Senha"
                 secureTextEntry={true}
+              />
+              <Text style={{color: 'red'}}>
+                {error && 'Email e/ou senha inválidos'}
+              </Text>
+            </View>
+            <View style={styles.containerMargin}>
+              <Button
+                title="Entrar"
+                color="#37BD6D"
+                onPress={() => {
+                  handleLogin();
+                }}
+              />
+            </View>
+            <View style={{marginVertical: 20, gap: 10}}>
+              <Button
+                title="Criar conta"
+                onPress={() => {
+                  navigation.navigate('NewAccount');
+                }}
+              />
+              <Button
+                title="Esqueci a senha"
+                color="#B0CCDE"
+                onPress={() => {
+                  navigation.navigate('NewPassword');
+                }}
               />
             </View>
           </View>
@@ -65,10 +110,19 @@ const styles = StyleSheet.create({
     color: Colors.lighter,
   },
   sectionTitle: {
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: '600',
     marginBottom: 20,
     color: Colors.white,
     textAlign: 'center',
+  },
+  containerMargin: {
+    marginTop: 20,
+  },
+  containerHeader: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 20,
   },
 });
