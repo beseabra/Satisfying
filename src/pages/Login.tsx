@@ -68,7 +68,7 @@ export default function Login() {
                 title="Entrar"
                 color="#37BD6D"
                 onPress={() => {
-                  handleLogin();
+                  navigation.navigate('Home');
                 }}
               />
             </View>

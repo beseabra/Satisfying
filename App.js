@@ -4,6 +4,9 @@ import React from 'react';
 import Login from './src/pages/Login';
 import NewAccount from './src/pages/NewAccount';
 import NewPassword from './src/pages/NewPassword';
+import Home from './src/pages/Home';
+import { TouchableOpacity } from 'react-native';
+{/*import Icon from 'react-native-vector-icons/FontAwesome'*/}
 
 const Stack = createStackNavigator();
 const App = () => {
@@ -19,6 +22,26 @@ const App = () => {
               elevation: 0,
             },
             headerTintColor: '#372775', 
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        />
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{
+            headerTitle: '',
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => {/* coloque a ação do drawer aqui */}}>
+              {/*<Icon name="facebook" size={25} color="#fff" /> */}
+            </TouchableOpacity>
+            ),
+            headerStyle: {
+              backgroundColor: '#2B1D62',
+              elevation: 0,
+            },
+            headerTintColor: '#fff',
             headerTitleStyle: {
               fontWeight: 'bold',
             },
