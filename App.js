@@ -1,9 +1,11 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import React from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 import Login from './src/pages/Login';
-import NewAccount from './src/pages/NewAccount';
 import NewPassword from './src/pages/NewPassword';
+import NewAccount from './src/pages/NewAccount';
+import React from 'react';
+import Report from './src/pages/Report';
+import SearchAction from './src/pages/SearchAction';
 
 const Stack = createStackNavigator();
 const App = () => {
@@ -18,7 +20,7 @@ const App = () => {
               backgroundColor: '#372775',
               elevation: 0,
             },
-            headerTintColor: '#372775', 
+            headerTintColor: '#372775',
             headerTitleStyle: {
               fontWeight: 'bold',
             },
@@ -37,7 +39,7 @@ const App = () => {
             },
           }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="NewAccount"
           component={NewAccount}
           options={{
@@ -45,6 +47,35 @@ const App = () => {
               backgroundColor: '#2B1D62', // Cor da barra de navegação
             },
             headerTintColor: '#fff', // Cor do texto na barra de navegação
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        />
+
+        <Stack.Screen
+          name="Search Action"
+          component={SearchAction}
+          options={{
+            headerStyle: {
+              backgroundColor: '#372775',
+              elevation: 0,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        />
+        <Stack.Screen
+          name="Report"
+          component={Report}
+          options={{
+            headerStyle: {
+              backgroundColor: '#372775',
+              elevation: 0,
+            },
+            headerTintColor: '#fff',
             headerTitleStyle: {
               fontWeight: 'bold',
             },
