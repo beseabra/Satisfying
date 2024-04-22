@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-{/*import Icon from 'react-native-vector-icons/MaterialIcons'*/}
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import {
   KeyboardAvoidingView,
@@ -21,37 +21,34 @@ export default function Home() {
   const [pesquisa, setPesquisa] = useState('');
 
   return (
-
     <SafeAreaView style={{ flex: 1 }}>
-      <KeyboardAvoidingView style={{ flex: 1 }}>
-        <ScrollView
-          style={{ backgroundColor: '#372775' }}
-          contentContainerStyle={{ flexGrow: 1 }}>
-          <View style={styles.container}>
-            <View style={styles.inputContainer}>
-              {/*<Icon name="reorder" size={25} color="black" />*/}
-              <TextInput
-                style={styles.input}
-                onChangeText={setPesquisa}
-                value={pesquisa}
-                placeholder="Insira o termo de busca..."
-              />
-            </View>
-            <View>
-              <Image style={styles.imagem} source={{ uri: 'https://i.imgur.com/39Bf57i.png' }} />
-            </View>
-            <View style={styles.containerMargin}>
-              <Button
-                title="NOVA PESQUISA"
-                color="#37BD6D"
-                onPress={() => {
-                  navigation.navigate('Home');
-                }}
-              />
-            </View>
+      <ScrollView
+        style={{ backgroundColor: '#372775' }}
+        contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={styles.container}>
+          <View style={styles.inputContainer}>
+            <Icon name="search" size={25} color="black" />
+            <TextInput
+              style={styles.input}
+              onChangeText={setPesquisa}
+              value={pesquisa}
+              placeholder="Insira o termo de busca..."
+            />
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+          <View>
+            <Image style={styles.imagem} source={{ uri: 'https://i.imgur.com/39Bf57i.png' }} />
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button
+              title="NOVA PESQUISA"
+              color="#37BD6D"
+              onPress={() => {
+                navigation.navigate('Home');
+              }}
+            />
+          </View>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -74,7 +71,7 @@ const styles = StyleSheet.create({
   },
   imagem: {
     height: '50%',
-    width: '50%',
+    width: '60%',
     marginTop: 15,
   },
   containerMargin: {

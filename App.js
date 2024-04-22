@@ -6,7 +6,7 @@ import NewAccount from './src/pages/NewAccount';
 import NewPassword from './src/pages/NewPassword';
 import Home from './src/pages/Home';
 import { TouchableOpacity } from 'react-native';
-{/*import Icon from 'react-native-vector-icons/FontAwesome'*/}
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Stack = createStackNavigator();
 const App = () => {
@@ -34,7 +34,7 @@ const App = () => {
             headerTitle: '',
             headerLeft: () => (
               <TouchableOpacity onPress={() => {/* coloque a ação do drawer aqui */}}>
-              {/*<Icon name="facebook" size={25} color="#fff" /> */}
+              <Icon name="menu" size={40} color="#fff" /> 
             </TouchableOpacity>
             ),
             headerStyle: {
