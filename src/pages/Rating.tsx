@@ -1,19 +1,26 @@
-import React, { useState } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import React, {useState} from 'react';
+import {
+  Image,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 export default function RatingScreen() {
   const [rating, setRating] = useState(null);
 
-  const handleRating = (value) => {
+  const handleRating = (value: any) => {
     setRating(value);
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{flex: 1}}>
       <ScrollView
-        style={{ backgroundColor: '#372775' }}
-        contentContainerStyle={{ flexGrow: 1 }}
-      >
+        style={{backgroundColor: '#372775'}}
+        contentContainerStyle={{flexGrow: 1}}>
         <View style={styles.container}>
           <View style={styles.containerHeader}>
             <Text style={styles.sectionTitle}>Satisfying.you</Text>
@@ -22,34 +29,59 @@ export default function RatingScreen() {
             <Text style={styles.text}>O que achou do Carnaval 2024?</Text>
             <View style={styles.ratingContainer}>
               <TouchableOpacity
-                style={[styles.ratingButton, rating === 1 && styles.selectedRating]}
-                onPress={() => handleRating(1)}
-              >
-                <Image source={require('../assets/rate1.png')} style={styles.ratingImage} />
+                style={[
+                  styles.ratingButton,
+                  rating === 1 && styles.selectedRating,
+                ]}
+                onPress={() => handleRating(1)}>
+                <Image
+                  source={require('../assets/logo.png')}
+                  style={styles.ratingImage}
+                />
               </TouchableOpacity>
               <TouchableOpacity
-                style={[styles.ratingButton, rating === 2 && styles.selectedRating]}
-                onPress={() => handleRating(2)}
-              >
-                <Image source={require('../assets/rate2.png')} style={styles.ratingImage} />
+                style={[
+                  styles.ratingButton,
+                  rating === 2 && styles.selectedRating,
+                ]}
+                onPress={() => handleRating(2)}>
+                <Image
+                  source={require('../assets/logo.png')}
+                  style={styles.ratingImage}
+                />
               </TouchableOpacity>
               <TouchableOpacity
-                style={[styles.ratingButton, rating === 3 && styles.selectedRating]}
-                onPress={() => handleRating(3)}
-              >
-                <Image source={require('../assets/rate3.png')} style={styles.ratingImage} />
+                style={[
+                  styles.ratingButton,
+                  rating === 3 && styles.selectedRating,
+                ]}
+                onPress={() => handleRating(3)}>
+                <Image
+                  source={require('../assets/logo.png')}
+                  style={styles.ratingImage}
+                />
               </TouchableOpacity>
               <TouchableOpacity
-                style={[styles.ratingButton, rating === 4 && styles.selectedRating]}
-                onPress={() => handleRating(1)}
-              >
-                <Image source={require('../assets/rate4.png')} style={styles.ratingImage} />
+                style={[
+                  styles.ratingButton,
+                  rating === 4 && styles.selectedRating,
+                ]}
+                onPress={() => handleRating(1)}>
+                <Image
+                  source={require('../assets/logo.png')}
+                  style={styles.ratingImage}
+                />
               </TouchableOpacity>
               <TouchableOpacity
-                style={[styles.ratingButton, rating === 5 && styles.selectedRating]}
-                onPress={() => handleRating(1)}
-              >
-                <Image source={require('../assets/rate5.png')} style={styles.ratingImage} />
+                style={[
+                  styles.ratingButton,
+                  rating === 5 && styles.selectedRating,
+                ]}
+                onPress={() => handleRating(1)}>
+                <Image
+                  source={require('../assets/logo.png')}
+                  style={styles.ratingImage}
+                />
               </TouchableOpacity>
             </View>
           </View>
