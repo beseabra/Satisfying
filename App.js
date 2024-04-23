@@ -95,7 +95,7 @@ const App = () => {
             },
             headerTintColor: '#fff', // Cor do texto na barra de navegação
             headerTitleStyle: {
-              fontWeight: 'bold',
+              fontFamily: 'AveriaLibre-Bold'
             },
           }}
         />
@@ -108,7 +108,7 @@ const App = () => {
             },
             headerTintColor: '#fff', // Cor do texto na barra de navegação
             headerTitleStyle: {
-              fontWeight: 'bold',
+              fontFamily: 'AveriaLibre-Bold'
             },
           }}
         />

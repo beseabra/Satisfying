@@ -1,21 +1,21 @@
+import {useNavigation} from '@react-navigation/native';
 import React, { useState } from "react";
 import { View, TextInput, Text, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-interface Props {
-  navigation: any;
-}
 
-const ModificarPesquisa: React.FC<Props> = (props) => {
-  const [nome, setNome] = useState<string>('');
-  const [data, setData] = useState<string>('');
+export default function ModificarPesquisa() {
 
+  const navigation = useNavigation();
+  const [nome, setNome] = useState('');
+  const [data, setData] = useState('');
+  
   const redirectHome = () => {
-    props.navigation.navigate('');
+    navigation.navigate('');
   }
 
   const redirectPopUp = () => {
-    props.navigation.navigate('');
+    navigation.navigate('');
   }
 
   return (
@@ -69,78 +69,78 @@ const ModificarPesquisa: React.FC<Props> = (props) => {
     </ScrollView>
   );
 }
-
+  
 const estilos = StyleSheet.create({
-  containerExterno: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  margem: {
-    backgroundColor: "#372775",
-  },
-  input: {
-    backgroundColor: 'white',
-    width: 653,
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 51,
-  },
-  inputData: {
-    backgroundColor: 'white',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 51,
-    width: 598
-  },
-  text: {
-    color: 'white',
-  },
-  containerData: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    height: 51,
-    width: 653
-  },
-  container: {
-    marginTop: 13,
-  },
-  containerCamera: {
-    backgroundColor: 'white',
-    height: 94,
-    width: 335,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  camera: {
-    textAlign: 'center',
-  },
-  containerFooter: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  btn: {
-    width: 653,
-    backgroundColor: "#37BD6D",
-    textAlign: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 50,
-    marginTop: 46,
-    marginBottom: 30
-  },
-  btnApagar: {
-    marginLeft: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 15
-  },
-  btnSalvar: {
-    color: 'white',
-  }
+    containerExterno: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 20
+    },
+    margem: {
+      backgroundColor: "#372775"
+    },
+    input: {
+      backgroundColor: 'white',
+      width: 653,
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: 51
+    },
+    inputData: {
+      backgroundColor: 'white',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: 51,
+      width: 598
+    },
+    text: {
+      color: 'white',
+      fontFamily: 'AveriaLibre-Regular'
+    },
+    containerData: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: 'white',
+      height: 51,
+      width: 653
+    },
+    container: {
+      marginTop: 13
+    },
+    containerCamera: {
+      backgroundColor: 'white',
+      height: 94,
+      width: 335,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    camera: {
+      textAlign: 'center'
+    },
+    containerFooter: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
+    btn: {
+      width: 653,
+      backgroundColor: "#37BD6D",
+      textAlign: 'center',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: 50,
+      marginTop: 46,
+      marginBottom: 30
+    },
+    btnApagar: {
+      marginLeft: 50,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: 15
+    },
+    btnSalvar: {
+      color: 'white',
+      fontFamily: 'AveriaLibre-Regular'
+    }
 });
-
-export default ModificarPesquisa;

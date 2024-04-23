@@ -1,21 +1,21 @@
 import React, { useState } from "react";
 import { View, TextInput, Text, StyleSheet, TouchableOpacity, Alert, ScrollView } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {useNavigation} from '@react-navigation/native';
 
-interface Props {
-  navigation: any;
-}
 
-const NovaPesquisa: React.FC<Props> = (props) => {
-  const [nome, setNome] = useState<string>('');
-  const [data, setData] = useState<string>('');
+export default function NovaPesquisa() {
+
+  const navigation = useNavigation();
+  const [nome, setNome] = useState('');
+  const [data, setData] = useState('');
 
   const redirectHome = () => {
     if (!nome || !data) {
       Alert.alert('Atenção', 'Por favor, preencha todos os campos.');
       return;
     } else {
-      props.navigation.navigate('');
+      navigation.navigate('');
     }
   }
 
@@ -31,7 +31,7 @@ const NovaPesquisa: React.FC<Props> = (props) => {
               onChangeText={setNome}
               placeholder="Nome"
             />
-            {nome === '' && <Text style={{ color: 'red' }}>Preencha no nome da pesquisa</Text>}
+            {nome === '' && <Text style={{ color: 'red', fontFamily: 'AveriaLibre-Regular' }}>Preencha no nome da pesquisa</Text>}
           </View>
 
           <View style={estilos.container}>
@@ -45,7 +45,7 @@ const NovaPesquisa: React.FC<Props> = (props) => {
               />
               <Icon name="calendar-month" size={28} color="gray" />
             </View>
-            {data === '' && <Text style={{ color: 'red' }}>Preencha a data</Text>}
+            {data === '' && <Text style={{ color: 'red', fontFamily: 'AveriaLibre-Regular' }}>Preencha a data</Text>}
           </View>
 
           <View style={estilos.container}>
@@ -73,17 +73,17 @@ const estilos = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    padding: 20
   },
   margem: {
-    backgroundColor: "#372775",
+    backgroundColor: "#372775"
   },
   input: {
     backgroundColor: 'white',
     width: 653,
     alignItems: 'center',
     justifyContent: 'center',
-    height: 51,
+    height: 51
   },
   inputData: {
     backgroundColor: 'white',
@@ -94,6 +94,7 @@ const estilos = StyleSheet.create({
   },
   text: {
     color: 'white',
+    fontFamily: 'AveriaLibre-Regular'
   },
   containerData: {
     flexDirection: 'row',
@@ -103,7 +104,7 @@ const estilos = StyleSheet.create({
     width: 653
   },
   container: {
-    marginTop: 13,
+    marginTop: 13
   },
   containerCamera: {
     backgroundColor: 'white',
@@ -114,6 +115,7 @@ const estilos = StyleSheet.create({
   },
   camera: {
     textAlign: 'center',
+    fontFamily: 'AveriaLibre-Regular'
   },
   btn: {
     width: 653,
@@ -127,7 +129,6 @@ const estilos = StyleSheet.create({
   },
   btnCadastrar: {
     color: 'white',
-  },
+    fontFamily: 'AveriaLibre-Regular'
+  }
 });
-
-export default NovaPesquisa;
