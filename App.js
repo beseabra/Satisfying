@@ -6,6 +6,8 @@ import NewAccount from './src/pages/NewAccount';
 import React from 'react';
 import Report from './src/pages/Report';
 import SearchAction from './src/pages/SearchAction';
+import Rating from './src/pages/Rating';
+import ThanksScreen from './src/pages/ThanksScreen';
 
 const Stack = createStackNavigator();
 const App = () => {
@@ -81,6 +83,38 @@ const App = () => {
             },
           }}
         />
+
+        <Stack.Screen
+          name="ThanksScreen"
+          component={ThanksScreen}
+          options={{
+            headerStyle: {
+              backgroundColor: '#372775',
+              elevation: 0,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        />
+
+        <Stack.Screen
+          name="Rating"
+          component={Rating}
+          options={{
+            headerStyle: {
+              backgroundColor: '#372775',
+              elevation: 0,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        />
+       
+
       </Stack.Navigator>
     </NavigationContainer>
   );
