@@ -1,26 +1,24 @@
-import React, {useState} from 'react';
-import {
-  Image,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 
-export default function RatingScreen() {
-  const [rating, setRating] = useState(null);
+// Adicionando um tipo de módulo para importação de imagens
+declare const require: (path: string) => number;
 
-  const handleRating = (value: any) => {
+interface RatingScreenProps {}
+
+export default function RatingScreen(props: RatingScreenProps) {
+  const [rating, setRating] = useState<number | null>(null);
+
+  const handleRating = (value: number) => {
     setRating(value);
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       <ScrollView
-        style={{backgroundColor: '#372775'}}
-        contentContainerStyle={{flexGrow: 1}}>
+        style={{ backgroundColor: '#372775' }}
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
         <View style={styles.container}>
           <View style={styles.containerHeader}>
             <Text style={styles.sectionTitle}>Satisfying.you</Text>
@@ -28,67 +26,39 @@ export default function RatingScreen() {
           <View style={styles.containerMargin}>
             <Text style={styles.text}>O que achou do Carnaval 2024?</Text>
             <View style={styles.ratingContainer}>
-              <TouchableOpacity
-                style={[
-                  styles.ratingButton,
-                  rating === 1 && styles.selectedRating,
-                ]}
-                onPress={() => handleRating(1)}>
-                <Image
-                  source={require('../assets/logo.png')}
-                  style={styles.ratingImage}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  styles.ratingButton,
-                  rating === 2 && styles.selectedRating,
-                ]}
-                onPress={() => handleRating(2)}>
-                <Image
-                  source={require('../assets/logo.png')}
-                  style={styles.ratingImage}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  styles.ratingButton,
-                  rating === 3 && styles.selectedRating,
-                ]}
-                onPress={() => handleRating(3)}>
-                <Image
-                  source={require('../assets/logo.png')}
-                  style={styles.ratingImage}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  styles.ratingButton,
-                  rating === 4 && styles.selectedRating,
-                ]}
-                onPress={() => handleRating(1)}>
-                <Image
-                  source={require('../assets/logo.png')}
-                  style={styles.ratingImage}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  styles.ratingButton,
-                  rating === 5 && styles.selectedRating,
-                ]}
-                onPress={() => handleRating(1)}>
-                <Image
-                  source={require('../assets/logo.png')}
-                  style={styles.ratingImage}
-                />
-              </TouchableOpacity>
+              {[1, 2, 3, 4, 5].map((value) => (
+                <TouchableOpacity
+                  key={value}
+                  style={[styles.ratingButton, rating === value && styles.selectedRating]}
+                  onPress={() => handleRating(value)}
+                >
+                  <Image source={getImageSource(value)} style={styles.ratingImage} />
+                </TouchableOpacity>
+              ))}
             </View>
           </View>
         </View>
       </ScrollView>
     </SafeAreaView>
   );
+}
+
+// Função para obter a fonte da imagem com base no valor
+function getImageSource(value: number): number {
+  switch (value) {
+    case 1:
+      return require('../assets/rate1.png');
+    case 2:
+      return require('../assets/rate2.png');
+    case 3:
+      return require('../assets/rate3.png');
+    case 4:
+      return require('../assets/rate4.png');
+    case 5:
+      return require('../assets/rate5.png');
+    default:
+      throw new Error('Invalid rating value');
+  }
 }
 
 const styles = StyleSheet.create({
@@ -124,6 +94,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   ratingButton: {
+    borderRadius: 30,
     padding: 0,
     width: '15%',
     alignItems: 'center',
