@@ -8,7 +8,9 @@ export default function NewAccount() {
   return (
     <View style={styles.container}>
       <View style={styles.body}>
-        <TouchableOpacity style={styles.button} onPress={() => {}}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('Modificar pesquisa')}>
           <Image source={require('../assets/change.png')} />
           <Text style={styles.buttonText}>Modificar</Text>
         </TouchableOpacity>

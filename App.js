@@ -8,6 +8,8 @@ import Report from './src/pages/Report';
 import SearchAction from './src/pages/SearchAction';
 import Rating from './src/pages/Rating';
 import ThanksScreen from './src/pages/ThanksScreen';
+import NovaPesquisa from './src/pages/NovaPesquisa';
+import ModificarPesquisa from './src/pages/ModificarPesquisa';
 
 const Stack = createStackNavigator();
 const App = () => {
@@ -83,7 +85,33 @@ const App = () => {
             },
           }}
         />
-
+        
+        <Stack.Screen
+          name="Nova pesquisa"
+          component={NovaPesquisa}
+          options={{
+            headerStyle: {
+              backgroundColor: '#2B1D62', // Cor da barra de navegação
+            },
+            headerTintColor: '#fff', // Cor do texto na barra de navegação
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        />
+        <Stack.Screen
+          name="Modificar pesquisa"
+          component={ModificarPesquisa}
+          options={{
+            headerStyle: {
+              backgroundColor: '#2B1D62', // Cor da barra de navegação
+            },
+            headerTintColor: '#fff', // Cor do texto na barra de navegação
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        />
         <Stack.Screen
           name="ThanksScreen"
           component={ThanksScreen}
