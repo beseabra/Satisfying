@@ -10,7 +10,6 @@ import NovaPesquisa from './src/pages/NovaPesquisa';
 import Rating from './src/pages/Rating';
 import Report from './src/pages/Report';
 import SearchAction from './src/pages/SearchAction';
-import ThanksScreen from './src/pages/ThanksScreen';
 
 const Stack = createStackNavigator();
 const App = () => {
@@ -66,13 +65,6 @@ const App = () => {
           component={ModificarPesquisa}
           options={{
             title: 'Modificar pesquisa',
-          }}
-        />
-        <Stack.Screen
-          name="ThanksScreen"
-          component={ThanksScreen}
-          options={{
-            title: 'Thanks Screen',
           }}
         />
         <Stack.Screen

@@ -1,24 +1,42 @@
-import React, { useState } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import React, {useState} from 'react';
+import {
+  Image,
+  Modal,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
-// Adicionando um tipo de módulo para importação de imagens
-declare const require: (path: string) => number;
+const listImages = [
+  {value: 1, source: require('../assets/rate1.png')},
+  {value: 2, source: require('../assets/rate2.png')},
+  {value: 3, source: require('../assets/rate3.png')},
+  {value: 4, source: require('../assets/rate4.png')},
+  {value: 5, source: require('../assets/rate5.png')},
+];
 
-interface RatingScreenProps {}
-
-export default function RatingScreen(props: RatingScreenProps) {
+export default function RatingScreen() {
   const [rating, setRating] = useState<number | null>(null);
+  const [modalVisible, setModalVisible] = useState(false);
 
-  const handleRating = (value: number) => {
+  function handleRating(value: number) {
     setRating(value);
-  };
+    setModalVisible(true);
+    setTimeout(() => {
+      setModalVisible(false);
+    }, 3000);
+
+    console.log('Rating:', value);
+  }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{flex: 1}}>
       <ScrollView
-        style={{ backgroundColor: '#372775' }}
-        contentContainerStyle={{ flexGrow: 1 }}
-      >
+        style={{backgroundColor: '#372775'}}
+        contentContainerStyle={{flexGrow: 1}}>
         <View style={styles.container}>
           <View style={styles.containerHeader}>
             <Text style={styles.sectionTitle}>Satisfying.you</Text>
@@ -26,39 +44,41 @@ export default function RatingScreen(props: RatingScreenProps) {
           <View style={styles.containerMargin}>
             <Text style={styles.text}>O que achou do Carnaval 2024?</Text>
             <View style={styles.ratingContainer}>
-              {[1, 2, 3, 4, 5].map((value) => (
+              {listImages.map((value, index) => (
                 <TouchableOpacity
-                  key={value}
-                  style={[styles.ratingButton, rating === value && styles.selectedRating]}
-                  onPress={() => handleRating(value)}
-                >
-                  <Image source={getImageSource(value)} style={styles.ratingImage} />
+                  key={index}
+                  style={[
+                    styles.ratingButton,
+                    rating === value.value && styles.selectedRating,
+                  ]}
+                  onPress={() => handleRating(value.value)}>
+                  <Image source={value.source} style={styles.ratingImage} />
                 </TouchableOpacity>
               ))}
             </View>
           </View>
+          <Modal
+            animationType="fade"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              setModalVisible(!modalVisible);
+            }}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={styles.modalText}>
+                  Obrigado por participar da pesquisa!
+                </Text>
+                <Text style={styles.modalText}>
+                  Aguardamos você no próximo ano!
+                </Text>
+              </View>
+            </View>
+          </Modal>
         </View>
       </ScrollView>
     </SafeAreaView>
   );
-}
-
-// Função para obter a fonte da imagem com base no valor
-function getImageSource(value: number): number {
-  switch (value) {
-    case 1:
-      return require('../assets/rate1.png');
-    case 2:
-      return require('../assets/rate2.png');
-    case 3:
-      return require('../assets/rate3.png');
-    case 4:
-      return require('../assets/rate4.png');
-    case 5:
-      return require('../assets/rate5.png');
-    default:
-      throw new Error('Invalid rating value');
-  }
 }
 
 const styles = StyleSheet.create({
@@ -72,6 +92,7 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     marginBottom: 20,
+    fontFamily: 'AveriaLibre-Bold',
   },
   sectionTitle: {
     fontSize: 30,
@@ -105,5 +126,35 @@ const styles = StyleSheet.create({
   ratingImage: {
     width: 60,
     height: 60,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalView: {
+    backgroundColor: '#372775',
+    display: 'flex',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+    color: 'white',
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalText: {
+    fontSize: 20,
+    marginBottom: 20,
+    textAlign: 'center',
+    color: 'white',
+    fontFamily: 'AveriaLibre-Bold',
   },
 });

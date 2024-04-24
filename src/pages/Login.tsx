@@ -1,5 +1,5 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React, {useState} from 'react';
 import {
   Image,
   KeyboardAvoidingView,
@@ -9,21 +9,20 @@ import {
   Text,
   TextInput,
   View,
-  useColorScheme,
 } from 'react-native';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 import Button from '../components/Button';
 
 export default function Login() {
   const navigation = useNavigation();
-  const isDarkMode = useColorScheme() === 'dark';
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [, setLogin] = useState(false);
   const [error, setError] = useState(false);
 
   function handleLogin() {
-    if (email && password) {
+    const emailRegex = /\S+@\S+\.\S+/;
+    if (emailRegex.test(email) && password !== '') {
       setLogin(true);
       setError(false);
     } else {
@@ -68,7 +67,7 @@ export default function Login() {
                 title="Entrar"
                 color="#37BD6D"
                 onPress={() => {
-                  navigation.navigate('Home' as never);
+                  handleLogin();
                 }}
               />
             </View>
@@ -106,7 +105,6 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: 'white',
     fontFamily: 'AveriaLibre-Regular',
-
   },
   textInput: {
     color: Colors.lighter,
@@ -119,11 +117,9 @@ const styles = StyleSheet.create({
     color: Colors.white,
     textAlign: 'center',
     fontFamily: 'AveriaLibre-Bold',
-
   },
   containerMargin: {
     marginTop: 20,
-    
   },
   containerHeader: {
     flexDirection: 'row',
