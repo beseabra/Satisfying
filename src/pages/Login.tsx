@@ -1,7 +1,6 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
 import {
-  Button,
   Image,
   KeyboardAvoidingView,
   SafeAreaView,
@@ -12,7 +11,8 @@ import {
   View,
   useColorScheme,
 } from 'react-native';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+import Button from '../components/Button';
 
 export default function Login() {
   const navigation = useNavigation();
@@ -68,7 +68,7 @@ export default function Login() {
                 title="Entrar"
                 color="#37BD6D"
                 onPress={() => {
-                  handleLogin();
+                  navigation.navigate('Home' as never);
                 }}
               />
             </View>
@@ -76,14 +76,14 @@ export default function Login() {
               <Button
                 title="Criar conta"
                 onPress={() => {
-                  navigation.navigate('NewAccount');
+                  navigation.navigate('NewAccount' as never);
                 }}
               />
               <Button
                 title="Esqueci a senha"
                 color="#B0CCDE"
                 onPress={() => {
-                  navigation.navigate('NewPassword');
+                  navigation.navigate('NewPassword' as never);
                 }}
               />
             </View>
@@ -105,19 +105,25 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     backgroundColor: 'white',
+    fontFamily: 'AveriaLibre-Regular',
+
   },
   textInput: {
     color: Colors.lighter,
+    fontFamily: 'AveriaLibre-Bold',
   },
   sectionTitle: {
-    fontSize: 30,
+    fontSize: 35,
     fontWeight: '600',
     marginBottom: 20,
     color: Colors.white,
     textAlign: 'center',
+    fontFamily: 'AveriaLibre-Bold',
+
   },
   containerMargin: {
     marginTop: 20,
+    
   },
   containerHeader: {
     flexDirection: 'row',

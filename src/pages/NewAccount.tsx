@@ -1,5 +1,5 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
 import {
   Button,
   KeyboardAvoidingView,
@@ -8,24 +8,22 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  View,
-  useColorScheme,
+  View
 } from 'react-native';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 export default function NewAccount() {
   const navigation = useNavigation();
-  const isDarkMode = useColorScheme() === 'dark';
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState({password: '', confirmPassword: ''});
-  const [login, setLogin] = useState(false);
+  const [, setLogin] = useState(false);
   const [error, setError] = useState(false);
 
   function handleCreateAccount() {
     if (password.password === password.confirmPassword) {
       setLogin(true);
       setError(false);
-      navigation.navigate('Login');
+      navigation.navigate('Login' as never);
     } else {
       setError(true);
     }
@@ -102,16 +100,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     backgroundColor: 'white',
+    fontFamily: 'AveriaLibre-Regular',
   },
   textInput: {
     color: Colors.lighter,
-  },
-  sectionTitle: {
-    fontSize: 30,
-    fontWeight: '600',
-    marginBottom: 20,
-    color: Colors.white,
-    textAlign: 'center',
+    fontFamily: 'AveriaLibre-Regular',
   },
   containerMargin: {
     marginTop: 20,

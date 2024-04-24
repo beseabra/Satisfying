@@ -1,6 +1,5 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
-  Button,
   KeyboardAvoidingView,
   SafeAreaView,
   ScrollView,
@@ -9,6 +8,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import Button from '../components/Button';
 
 export default function NewPassword() {
   const [email, setEmail] = useState('');
@@ -66,11 +66,13 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
     marginTop: 10,
+    fontFamily: 'AveriaLibre-Regular',
   },
   input: {
     backgroundColor: 'white',
     padding: 10,
     marginBottom: 10,
+    fontFamily: 'AveriaLibre-Regular',
   },
   containerInput: {
     marginBottom: 40,

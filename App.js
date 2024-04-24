@@ -1,148 +1,87 @@
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+import { navigationOptions } from './navigationOptions';
 import Login from './src/pages/Login';
-import NewPassword from './src/pages/NewPassword';
+import ModificarPesquisa from './src/pages/ModificarPesquisa';
 import NewAccount from './src/pages/NewAccount';
-import React from 'react';
+import NewPassword from './src/pages/NewPassword';
+import NovaPesquisa from './src/pages/NovaPesquisa';
+import Rating from './src/pages/Rating';
 import Report from './src/pages/Report';
 import SearchAction from './src/pages/SearchAction';
-import Rating from './src/pages/Rating';
 import ThanksScreen from './src/pages/ThanksScreen';
-import NovaPesquisa from './src/pages/NovaPesquisa';
-import ModificarPesquisa from './src/pages/ModificarPesquisa';
 
 const Stack = createStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={navigationOptions}>
         <Stack.Screen
           name="Login"
           component={Login}
           options={{
-            headerStyle: {
-              backgroundColor: '#372775',
-              elevation: 0,
-            },
-            headerTintColor: '#372775',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
+            title: 'Login',
           }}
+          screenOptions={navigationOptions}
         />
+    
         <Stack.Screen
           name="NewPassword"
           component={NewPassword}
           options={{
-            headerStyle: {
-              backgroundColor: '#2B1D62', // Cor da barra de navegação
-            },
-            headerTintColor: '#fff', // Cor do texto na barra de navegação
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
+            title: 'New Password',
           }}
         />
         <Stack.Screen
           name="NewAccount"
           component={NewAccount}
           options={{
-            headerStyle: {
-              backgroundColor: '#2B1D62', // Cor da barra de navegação
-            },
-            headerTintColor: '#fff', // Cor do texto na barra de navegação
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
+            title: 'New Account',
           }}
         />
-
         <Stack.Screen
           name="Search Action"
           component={SearchAction}
           options={{
-            headerStyle: {
-              backgroundColor: '#372775',
-              elevation: 0,
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
+            title: 'Search Action',
           }}
         />
         <Stack.Screen
           name="Report"
           component={Report}
           options={{
-            headerStyle: {
-              backgroundColor: '#372775',
-              elevation: 0,
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
+            title: 'Report',
           }}
         />
-        
         <Stack.Screen
           name="Nova pesquisa"
           component={NovaPesquisa}
           options={{
-            headerStyle: {
-              backgroundColor: '#2B1D62', // Cor da barra de navegação
-            },
-            headerTintColor: '#fff', // Cor do texto na barra de navegação
-            headerTitleStyle: {
-              fontFamily: 'AveriaLibre-Bold'
-            },
+            title: 'Nova pesquisa',
           }}
         />
         <Stack.Screen
           name="Modificar pesquisa"
           component={ModificarPesquisa}
           options={{
-            headerStyle: {
-              backgroundColor: '#2B1D62', // Cor da barra de navegação
-            },
-            headerTintColor: '#fff', // Cor do texto na barra de navegação
-            headerTitleStyle: {
-              fontFamily: 'AveriaLibre-Bold'
-            },
+            title: 'Modificar pesquisa',
           }}
         />
         <Stack.Screen
           name="ThanksScreen"
           component={ThanksScreen}
           options={{
-            headerStyle: {
-              backgroundColor: '#372775',
-              elevation: 0,
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
+            title: 'Thanks Screen',
           }}
         />
-
         <Stack.Screen
           name="Rating"
           component={Rating}
           options={{
-            headerStyle: {
-              backgroundColor: '#372775',
-              elevation: 0,
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
+            title: 'Rating',
           }}
         />
-       
-
       </Stack.Navigator>
     </NavigationContainer>
   );

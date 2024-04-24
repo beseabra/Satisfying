@@ -1,6 +1,7 @@
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
 
 export default function NewAccount() {
   const navigation = useNavigation();
@@ -10,7 +11,7 @@ export default function NewAccount() {
       <View style={styles.body}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('Modificar pesquisa')}>
+          onPress={() => navigation.navigate('Modificar pesquisa' as never)}>
           <Image source={require('../assets/change.png')} />
           <Text style={styles.buttonText}>Modificar</Text>
         </TouchableOpacity>
@@ -20,7 +21,7 @@ export default function NewAccount() {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('Report')}>
+          onPress={() => navigation.navigate('Report'  as never)}>
           <Image source={require('../assets/report.png')} />
           <Text style={styles.buttonText}>Relatório</Text>
         </TouchableOpacity>
