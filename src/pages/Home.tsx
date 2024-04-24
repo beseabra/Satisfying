@@ -1,33 +1,33 @@
-import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-
+import { useNavigation } from '@react-navigation/native';
 import {
-  KeyboardAvoidingView,
   SafeAreaView,
   ScrollView,
-  StyleSheet,
-  Button,
-  TextInput,
   View,
-  useColorScheme,
+  TextInput,
+  StyleSheet,
   Image,
+  Button,
+  Text
 } from 'react-native';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
+const eventData = [
+  { key: '1', image: require('../assets/secomp.png') },
+  { key: '2', image: require('../assets/ubuntu.png') },
+  { key: '3', image: require('../assets/meninas_cpu.png') }
+];
 
 export default function Home() {
   const navigation = useNavigation();
-  const isDarkMode = useColorScheme() === 'dark';
   const [pesquisa, setPesquisa] = useState('');
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView
-        style={{ backgroundColor: '#372775' }}
-        contentContainerStyle={{ flexGrow: 1 }}>
+    <SafeAreaView style={styles.safeArea}>
+      <ScrollView style={styles.scrollView}>
         <View style={styles.container}>
-          <View style={styles.inputContainer}>
-            <Icon name="search" size={25} color="black" />
+          <View style={styles.searchContainer}>
+            <Icon name="search" size={25} color="#000" />
             <TextInput
               style={styles.input}
               onChangeText={setPesquisa}
@@ -35,18 +35,20 @@ export default function Home() {
               placeholder="Insira o termo de busca..."
             />
           </View>
-          <View>
-            <Image style={styles.imagem} source={{ uri: 'https://i.imgur.com/39Bf57i.png' }} />
+          <View style={styles.eventContainer}>
+            {eventData.map((event) => (
+              <View key={event.key} style={styles.eventItem}>
+                <Image style={styles.image} source={event.image} />
+                <Text style={styles.eventName}>{event.name}</Text>
+                <Text style={styles.eventDate}>{event.date}</Text>
+              </View>
+            ))}
           </View>
-          <View style={styles.buttonContainer}>
-            <Button
-              title="NOVA PESQUISA"
-              color="#37BD6D"
-              onPress={() => {
-                navigation.navigate('Home');
-              }}
-            />
-          </View>
+          <Button
+            title="NOVA PESQUISA"
+            color="#37BD6D"
+            onPress={() => navigation.navigate('Home')}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -54,37 +56,34 @@ export default function Home() {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
+  },
+  scrollView: {
+    backgroundColor: '#372775',
+  },
+  container: {
     padding: 10,
   },
-  input: {
-    height: 50,
-    backgroundColor: 'white',
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    marginBottom: 20,
-    color: Colors.white,
-    textAlign: 'center',
-  },
-  imagem: {
-    height: '50%',
-    width: '60%',
-    marginTop: 15,
-  },
-  containerMargin: {
-    marginTop: -150,
-  },
-  inputContainer: {
+  searchContainer: {
     flexDirection: 'row',
+    backgroundColor: '#FFF',
+    padding: 10,
     alignItems: 'center',
-    backgroundColor: 'white',
-    borderWidth: 1,
-    paddingLeft: 10,
+    marginBottom: 20,
   },
-  inputIcon: {
-    marginRight: 10,
+  input: {
+    flex: 1,
+    marginLeft: 10,
+    height: 40,
+  },
+  eventContainer: {
+    flexDirection: 'row', // Layout horizontal
+    justifyContent: 'space-around', // Espaçamento igual entre os itens
+    marginBottom: 20,
+  },
+  image: {
+    width: 120,
+    height: 120,
   },
 });
