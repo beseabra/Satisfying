@@ -15,7 +15,7 @@ export default function NewAccount() {
           <Image source={require('../assets/change.png')} />
           <Text style={styles.buttonText}>Modificar</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => {}}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Rating'  as never)}>
           <Image source={require('../assets/check.png')} />
           <Text style={styles.buttonText}>Coletar os dados</Text>
         </TouchableOpacity>

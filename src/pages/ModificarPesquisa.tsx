@@ -25,6 +25,7 @@ export default function ModificarPesquisa() {
 
   const handleDelete = () => {
     setCalcell(false);
+    navigation.navigate('Home' as never)
   };
 
   const handleSave = () => {
@@ -32,16 +33,6 @@ export default function ModificarPesquisa() {
       navigation.navigate('Home' as never);
     } else {
       alert('Por favor, preencha todos os campos antes de salvar.');
-    }
-  };
-
-  const handleDataChange = (text: string) => {
-    if (/^\d+$/.test(text)) {
-      if (text.length === 2 || text.length === 5) {
-        setData(text + '/');
-      } else if (text.length <= 10) {
-        setData(text);
-      }
     }
   };
 
@@ -72,14 +63,18 @@ export default function ModificarPesquisa() {
 
           <View style={estilos.container}>
             <Text style={estilos.text}>Data</Text>
-            <TextInput
-              style={estilos.inputData}
-              value={data}
-              onChangeText={text => handleDataChange(text)}
-              placeholder="DD/MM/AAAA"
-              keyboardType="numeric"
-              maxLength={10}
-            />
+              <View style={estilos.containerData}>
+                <TextInput
+                  style={estilos.inputData}
+                  value={data}
+                  onChangeText={text => setData(text)}
+                  placeholder="DD/MM/AAAA"
+                  maxLength={10}
+                />
+                <View style={estilos.calendar}>
+                  <Icon name="calendar-month" size={28} color="gray" />
+                </View>
+            </View>
           </View>
 
           <View style={estilos.container}>
@@ -90,7 +85,9 @@ export default function ModificarPesquisa() {
           </View>
 
           <View style={estilos.containerFooter}>
-            <Button title="SALVAR" onPress={handleSave} color="#37BD6D" />
+          <TouchableOpacity style={estilos.btn} onPress={handleSave}>
+              <Text style={estilos.btnSalvar}>SALVAR</Text>
+            </TouchableOpacity>
             <View style={estilos.btnApagar}>
               <TouchableOpacity onPress={redirectPopUp}>
                 <Icon name="delete-outline" size={40} color="white" />
@@ -129,6 +126,20 @@ export default function ModificarPesquisa() {
 }
 
 const estilos = StyleSheet.create({
+  btnSalvar: {
+    color: 'white',
+    fontFamily: 'AveriaLibre-Bold'
+  },
+  btn: {
+    width: 653,
+    backgroundColor: "#37BD6D",
+    textAlign: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 50,
+    marginTop: 46,
+    marginBottom: 30
+  },
   containerExterno: {
     flex: 1,
     justifyContent: 'center',
@@ -144,6 +155,8 @@ const estilos = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 51,
+    fontFamily: 'AveriaLibre-Regular'
+
   },
   inputData: {
     backgroundColor: 'white',
@@ -151,17 +164,25 @@ const estilos = StyleSheet.create({
     justifyContent: 'center',
     height: 51,
     width: 598,
+    fontFamily: 'AveriaLibre-Regular'
+
   },
   text: {
     color: 'white',
-    fontFamily: 'AveriaLibre-Regular',
+    fontFamily: 'AveriaLibre-Bold',
   },
   containerData: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'white',
     height: 51,
-    width: 653,
+    width: 55,
+  },
+  calendar: {
+    backgroundColor: 'white',
+    width: 55,
+    height: 51,
+    justifyContent: 'center'
   },
   container: {
     marginTop: 13,
@@ -208,6 +229,3 @@ const estilos = StyleSheet.create({
     gap: 20,
   },
 });
-function alert(arg0: string) {
-  throw new Error('Function not implemented.');
-}
