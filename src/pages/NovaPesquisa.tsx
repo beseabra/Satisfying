@@ -63,7 +63,9 @@ export default function NovaPesquisa() {
               <Text style={estilos.camera}>Câmera/Galeria de imagens</Text>
             </View>
           </View>
-          <Button title="CADASTRAR" onPress={redirectHome} color="#37BD6D" />
+          <View style={estilos.containerCadastrar}>
+            <Button title="CADASTRAR" onPress={redirectHome} color="#37BD6D" />
+          </View>
         </View>
       </View>
     </ScrollView>
@@ -98,7 +100,7 @@ const estilos = StyleSheet.create({
   },
   text: {
     color: 'white',
-    fontFamily: 'AveriaLibre-Regular',
+    fontFamily: 'AveriaLibre-Bold',
   },
   containerData: {
     flexDirection: 'row',
@@ -120,6 +122,9 @@ const estilos = StyleSheet.create({
   },
   camera: {
     textAlign: 'center',
-    fontFamily: 'AveriaLibre-Regular',
+    fontFamily: 'AveriaLibre-Bold',
   },
+  containerCadastrar: {
+    marginTop: 40
+  }
 });
