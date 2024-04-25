@@ -25,6 +25,7 @@ export default function Login() {
     if (emailRegex.test(email) && password !== '') {
       setLogin(true);
       setError(false);
+      navigation.navigate('Home' as never);
     } else {
       setError(true);
     }

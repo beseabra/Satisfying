@@ -1,7 +1,9 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-
+import { TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { navigationOptions } from './navigationOptions';
+import Home from './src/pages/Home';
 import Login from './src/pages/Login';
 import ModificarPesquisa from './src/pages/ModificarPesquisa';
 import NewAccount from './src/pages/NewAccount';
@@ -24,7 +26,26 @@ const App = () => {
           }}
           screenOptions={navigationOptions}
         />
-    
+     <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{
+            headerTitle: '',
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => {/* coloque a ação do drawer aqui */}}>
+              <Icon name="menu" size={40} color="#fff" /> 
+            </TouchableOpacity>
+            ),
+            headerStyle: {
+              backgroundColor: '#2B1D62',
+              elevation: 0,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        />
         <Stack.Screen
           name="NewPassword"
           component={NewPassword}
