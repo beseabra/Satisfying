@@ -36,14 +36,6 @@ export default function ModificarPesquisa() {
     }
   };
 
-  const verificarCamposPreenchidos = () => {
-    if (nome !== '' && data !== '') {
-      setCamposPreenchidos(true);
-    } else {
-      setCamposPreenchidos(false);
-    }
-  };
-
   return (
     <ScrollView style={estilos.margem}>
       <View style={estilos.containerExterno}>
@@ -53,10 +45,7 @@ export default function ModificarPesquisa() {
             <TextInput
               style={estilos.input}
               value={nome}
-              onChangeText={text => {
-                setNome(text);
-                verificarCamposPreenchidos();
-              }}
+              onChangeText={setNome}
               placeholder="Nome"
             />
           </View>
@@ -67,7 +56,7 @@ export default function ModificarPesquisa() {
                 <TextInput
                   style={estilos.inputData}
                   value={data}
-                  onChangeText={text => setData(text)}
+                  onChangeText={setData}
                   placeholder="DD/MM/AAAA"
                   maxLength={10}
                 />
