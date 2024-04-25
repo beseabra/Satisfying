@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
+import {useState} from 'react';
 import {
   Image,
   SafeAreaView,
@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Button from '../components/Button';
+import React = require('react');
 
 const eventData = [
   {key: '1', image: require('../assets/secomp.png')},

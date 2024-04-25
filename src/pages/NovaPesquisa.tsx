@@ -1,24 +1,19 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
-import {
-  Alert,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import Button from '../components/Button';
 
 export default function NovaPesquisa() {
   const navigation = useNavigation();
   const [nome, setNome] = useState('');
   const [data, setData] = useState('');
+  const [error, setError] = useState(false);
 
   const redirectHome = () => {
     if (!nome || !data) {
-      Alert.alert('Atenção', 'Por favor, preencha todos os campos.');
+      setError(true);
+
       return;
     } else {
       navigation.navigate('Home' as never);
@@ -37,7 +32,7 @@ export default function NovaPesquisa() {
               onChangeText={setNome}
               placeholder="Nome"
             />
-            {nome === '' && (
+            {error && nome === '' && (
               <Text style={{color: 'red', fontFamily: 'AveriaLibre-Regular'}}>
                 Preencha no nome da pesquisa
               </Text>
@@ -55,7 +50,7 @@ export default function NovaPesquisa() {
               />
               <Icon name="calendar-month" size={28} color="gray" />
             </View>
-            {data === '' && (
+            {error && data === '' && (
               <Text style={{color: 'red', fontFamily: 'AveriaLibre-Regular'}}>
                 Preencha a data
               </Text>
@@ -68,12 +63,7 @@ export default function NovaPesquisa() {
               <Text style={estilos.camera}>Câmera/Galeria de imagens</Text>
             </View>
           </View>
-
-          <View>
-            <TouchableOpacity style={estilos.btn} onPress={redirectHome}>
-              <Text style={estilos.btnCadastrar}>CADASTRAR</Text>
-            </TouchableOpacity>
-          </View>
+          <Button title="CADASTRAR" onPress={redirectHome} color="#37BD6D" />
         </View>
       </View>
     </ScrollView>
@@ -96,11 +86,13 @@ const estilos = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 51,
+    fontFamily: 'AveriaLibre-Regular',
   },
   inputData: {
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
+    fontFamily: 'AveriaLibre-Regular',
     height: 51,
     width: 598,
   },
@@ -117,6 +109,7 @@ const estilos = StyleSheet.create({
   },
   container: {
     marginTop: 13,
+    marginBottom: 8,
   },
   containerCamera: {
     backgroundColor: 'white',
@@ -127,20 +120,6 @@ const estilos = StyleSheet.create({
   },
   camera: {
     textAlign: 'center',
-    fontFamily: 'AveriaLibre-Regular',
-  },
-  btn: {
-    width: 653,
-    backgroundColor: '#37BD6D',
-    textAlign: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 50,
-    marginTop: 46,
-    marginBottom: 30,
-  },
-  btnCadastrar: {
-    color: 'white',
     fontFamily: 'AveriaLibre-Regular',
   },
 });
