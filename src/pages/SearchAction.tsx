@@ -18,7 +18,7 @@ export default function SearchAction() {
           <Image source={require('../assets/change.png')} />
           <Text style={styles.buttonText}>Modificar</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Rating' as never)}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Rating' as never,{ id } as never)}>
           <Image source={require('../assets/check.png')} />
           <Text style={styles.buttonText}>Coletar os dados</Text>
         </TouchableOpacity>
