@@ -1,6 +1,8 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import React, { useState } from 'react';
 import {
+  Alert,
   Image,
   KeyboardAvoidingView,
   SafeAreaView,
@@ -10,33 +12,42 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 import Button from '../components/Button';
+import { auth_mod } from '../firebase/config';
 
 export default function Login() {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [, setLogin] = useState(false);
   const [error, setError] = useState(false);
 
   function handleLogin() {
     const emailRegex = /\S+@\S+\.\S+/;
     if (emailRegex.test(email) && password !== '') {
-      setLogin(true);
-      setError(false);
-      navigation.navigate('Home' as never);
+      signInWithEmailAndPassword(auth_mod, email, password)
+        .then((userCredential) => {
+          setError(false);
+         navigation.navigate('Home' as never)
+
+        })
+        .catch((error) => {
+          setError(true);
+          Alert.alert('Erro', 'Email e/ou senha inválidos.');
+          console.log(error);
+        });
     } else {
       setError(true);
+      Alert.alert('Erro', 'Por favor, insira um email e senha válidos.');
     }
   }
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <KeyboardAvoidingView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
+      <KeyboardAvoidingView style={{ flex: 1 }}>
         <ScrollView
-          style={{backgroundColor: '#372775'}}
-          contentContainerStyle={{flexGrow: 1}}>
+          style={{ backgroundColor: '#372775' }}
+          contentContainerStyle={{ flexGrow: 1 }}>
           <View style={styles.container}>
             <View style={styles.containerHeader}>
               <Text style={styles.sectionTitle}>Satisfying.you</Text>
@@ -59,7 +70,7 @@ export default function Login() {
                 placeholder="Senha"
                 secureTextEntry={true}
               />
-              <Text style={{color: 'red'}}>
+              <Text style={{ color: 'red' }}>
                 {error && 'Email e/ou senha inválidos'}
               </Text>
             </View>
@@ -67,24 +78,18 @@ export default function Login() {
               <Button
                 title="Entrar"
                 color="#37BD6D"
-                onPress={() => {
-                  handleLogin();
-                }}
+                onPress={handleLogin}
               />
             </View>
-            <View style={{marginVertical: 20, gap: 10}}>
+            <View style={{ marginVertical: 20, gap: 10 }}>
               <Button
                 title="Criar conta"
-                onPress={() => {
-                  navigation.navigate('NewAccount' as never);
-                }}
+                onPress={() => navigation.navigate('NewAccount' as never)}
               />
               <Button
                 title="Esqueci a senha"
                 color="#B0CCDE"
-                onPress={() => {
-                  navigation.navigate('NewPassword' as never);
-                }}
+                onPress={() => navigation.navigate('NewPassword' as never)}
               />
             </View>
           </View>

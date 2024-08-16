@@ -1,6 +1,8 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import React, { useState } from 'react';
 import {
+  Alert,
   Button,
   KeyboardAvoidingView,
   SafeAreaView,
@@ -8,33 +10,45 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  View,
+  View
 } from 'react-native';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { auth_mod } from '../firebase/config';
 
 export default function NewAccount() {
-  const navigation = useNavigation();
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState({password: '', confirmPassword: ''});
-  const [, setLogin] = useState(false);
+  const [password, setPassword] = useState({ password: '', confirmPassword: '' });
   const [error, setError] = useState(false);
+  const navigation = useNavigation();
 
   function handleCreateAccount() {
     if (password.password === password.confirmPassword) {
-      setLogin(true);
-      setError(false);
-      navigation.navigate('Login' as never);
+     
+      createUserWithEmailAndPassword(auth_mod, email, password.password)
+        .then((userCredential) => {
+           Alert.alert('Sucesso', 'Conta criada com sucesso!', [
+            { text: 'OK', onPress: () => navigation.navigate('Login' as never) }, // Navega para a tela de login ao clicar em "OK"
+          ]);
+          
+          console.log(userCredential);   
+        })
+        .catch((error) => {
+          console.log(error);
+          Alert.alert('Erro', error.message);
+         
+        });
     } else {
       setError(true);
+      Alert.alert('Erro', 'As senhas não coincidem.');
     }
   }
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <KeyboardAvoidingView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
+      <KeyboardAvoidingView style={{ flex: 1 }}>
         <ScrollView
-          style={{backgroundColor: '#372775'}}
-          contentContainerStyle={{flexGrow: 1}}>
+          style={{ backgroundColor: '#372775' }}
+          contentContainerStyle={{ flexGrow: 1 }}>
           <View style={styles.container}>
             <View style={styles.containerMargin}>
               <Text style={styles.textInput}>Email</Text>
@@ -71,7 +85,7 @@ export default function NewAccount() {
                 placeholder="Repetir senha"
                 secureTextEntry={true}
               />
-              <Text style={{color: 'red'}}>
+              <Text style={{ color: 'red' }}>
                 {error && 'O campo repetir senha difere da senha'}
               </Text>
             </View>
@@ -108,11 +122,5 @@ const styles = StyleSheet.create({
   },
   containerMargin: {
     marginTop: 20,
-  },
-  containerHeader: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 20,
   },
 });
