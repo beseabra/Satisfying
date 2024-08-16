@@ -1,8 +1,8 @@
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SearchActionRouteProp } from './Rating';
 
-type SearchActionRouteProp = RouteProp<{ params: { id: string } }, 'params'>;
 
 export default function SearchAction() {
   const navigation = useNavigation();
@@ -24,7 +24,7 @@ export default function SearchAction() {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('Report' as never)}>
+          onPress={() => navigation.navigate('Report' as never,{ id } as never)}>
           <Image source={require('../assets/report.png')} />
           <Text style={styles.buttonText}>Relatório</Text>
         </TouchableOpacity>

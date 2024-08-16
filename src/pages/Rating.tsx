@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { useUserContext } from '../contexts/UserContext';
 import { db } from '../firebase/config'; // Certifique-se de importar o Firestore
 
 const listImages = [
@@ -22,7 +23,7 @@ const listImages = [
   { value: 5, source: require('../assets/rate5.png') },
 ];
 
-type SearchActionRouteProp = RouteProp<{ params: { id: string } }, 'params'>;
+export type SearchActionRouteProp = RouteProp<{ params: { id: string } }, 'params'>;
 
 export default function RatingScreen() {
   const [rating, setRating] = useState<number | null>(null);
@@ -30,8 +31,11 @@ export default function RatingScreen() {
 
   const route = useRoute<SearchActionRouteProp>();
   const { id } = route.params;
+  const { state } = useUserContext();
+  const userId = state.userId || ""; 
 
-  const userId = 'user-id'; // Substitua pelo ID do usuário autenticado
+  console.log('userId', userId);
+  
 
   useEffect(() => {
     checkIfUserHasRated();
