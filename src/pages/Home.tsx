@@ -1,27 +1,50 @@
-import {useNavigation} from '@react-navigation/native';
-import {useState} from 'react';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { collection, getDocs } from 'firebase/firestore';
+import React, { useState } from 'react';
 import {
   Image,
   SafeAreaView,
   ScrollView,
   StyleSheet,
+  Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Button from '../components/Button';
-import React = require('react');
+import { db } from '../firebase/config';
 
-const eventData = [
-  {key: '1', image: require('../assets/secomp.png')},
-  {key: '2', image: require('../assets/ubuntu.png')},
-  {key: '3', image: require('../assets/meninas_cpu.png')},
-];
+type Pesquisa = {
+  id: string;
+  nome: string;
+  data: string;
+  imagem: string;
+};
 
 export default function Home() {
   const navigation = useNavigation();
-  const [pesquisa, setPesquisa] = useState('');
+  const [pesquisa, setPesquisa] = useState<string>('');
+  const [pesquisas, setPesquisas] = useState<Pesquisa[]>([]);
+
+  const fetchPesquisas = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, 'pesquisas'));
+      const pesquisasData = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as Pesquisa[];
+      setPesquisas(pesquisasData);
+    } catch (error) {
+      console.error('Erro ao buscar as pesquisas:', error);
+    }
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchPesquisas();
+    }, [])
+  );
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -37,11 +60,15 @@ export default function Home() {
             />
           </View>
           <View style={styles.eventContainer}>
-            {eventData.map(event => (
-              <View key={event.key}>
+            {pesquisas.map(pesquisa => (
+              <View key={pesquisa.id}>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('Search Action' as never)}>
-                  <Image style={styles.image} source={event.image} />
+                  onPress={() =>
+                    navigation.navigate('Search Action' as never, { id: pesquisa.id } as never)
+                  }>
+                  <Image style={styles.image} source={require('../assets/secomp.png')} />
+                  <Text>{pesquisa.nome}</Text>
+                  <Text>{pesquisa.data}</Text>
                 </TouchableOpacity>
               </View>
             ))}

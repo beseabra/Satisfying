@@ -10,23 +10,22 @@ export default function NovaPesquisa() {
   const navigation = useNavigation();
   const [nome, setNome] = useState('');
   const [data, setData] = useState('');
+  const [imagem, setImagem] = useState(''); // Adicionando o estado da imagem
   const [error, setError] = useState(false);
-
 
   const pesquisaRef = collection(db, 'pesquisas');
 
   const redirectHome = async () => {
-    if (!nome || !data) {
+    if (!nome || !data || !imagem) {
       setError(true);
       return;
     }
 
     try {
-      
       await addDoc(pesquisaRef, {
         nome: nome,
         data: data,
-        // adicionar URL de imagem 
+        imagem: imagem, // Salvando a URL da imagem
       });
       Alert.alert('Sucesso', 'Pesquisa cadastrada com sucesso!', [
         { text: 'OK', onPress: () => navigation.navigate('Home' as never) },
@@ -77,8 +76,18 @@ export default function NovaPesquisa() {
           <View style={estilos.container}>
             <Text style={estilos.text}>Imagem</Text>
             <View style={estilos.containerCamera}>
-              <Text style={estilos.camera}>Câmera/Galeria de imagens</Text>
+              <TextInput
+                style={estilos.camera}
+                value={imagem}
+                onChangeText={setImagem}
+                placeholder="URL da imagem"
+              />
             </View>
+            {error && imagem === '' && (
+              <Text style={{ color: 'red', fontFamily: 'AveriaLibre-Regular' }}>
+                Preencha a URL da imagem
+              </Text>
+            )}
           </View>
           <View style={estilos.containerCadastrar}>
             <Button title="CADASTRAR" onPress={redirectHome} color="#37BD6D" />

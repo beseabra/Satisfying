@@ -1,6 +1,8 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
 import {
+  Alert,
   Modal,
   ScrollView,
   StyleSheet,
@@ -11,28 +13,68 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Button from '../components/Button';
+import { db } from '../firebase/config';
+
+type ModificarPesquisaRouteProp = RouteProp<{ params: { id: string } }, 'params'>;
 
 export default function ModificarPesquisa() {
   const navigation = useNavigation();
+  const route = useRoute<ModificarPesquisaRouteProp>();
+  const { id } = route.params;
+
   const [nome, setNome] = useState('');
   const [data, setData] = useState('');
   const [calcell, setCalcell] = useState(false);
-  const [camposPreenchidos, setCamposPreenchidos] = useState(false);
+
+  useEffect(() => {
+    const fetchPesquisa = async () => {
+      const pesquisaRef = doc(db, 'pesquisas', id);
+      const pesquisaSnap = await getDoc(pesquisaRef);
+
+      if (pesquisaSnap.exists()) {
+        const pesquisaData = pesquisaSnap.data();
+        setNome(pesquisaData.nome);
+        setData(pesquisaData.data);
+      } else {
+        Alert.alert('Erro', 'Pesquisa não encontrada.');
+        navigation.navigate('Home' as never);
+      }
+    };
+
+    fetchPesquisa();
+  }, [id]);
+
+  const handleSave = async () => {
+    if (nome !== '' && data !== '') {
+      try {
+        const pesquisaRef = doc(db, 'pesquisas', id);
+        await updateDoc(pesquisaRef, {
+          nome,
+          data,
+        });
+        Alert.alert('Sucesso', 'Pesquisa atualizada com sucesso!');
+        navigation.navigate('Home' as never);
+      } catch (error) {
+        Alert.alert('Erro', 'Ocorreu um erro ao atualizar a pesquisa.');
+      }
+    } else {
+      Alert.alert('Por favor, preencha todos os campos antes de salvar.');
+    }
+  };
 
   const redirectPopUp = () => {
     setCalcell(true);
   };
 
-  const handleDelete = () => {
-    setCalcell(false);
-    navigation.navigate('Home' as never)
-  };
-
-  const handleSave = () => {
-    if (nome !== '' && data !== '') {
+  const handleDelete = async () => {
+    try {
+      const pesquisaRef = doc(db, 'pesquisas', id);
+      await deleteDoc(pesquisaRef);
+      Alert.alert('Sucesso', 'Pesquisa apagada com sucesso!');
+      setCalcell(false);
       navigation.navigate('Home' as never);
-    } else {
-      alert('Por favor, preencha todos os campos antes de salvar.');
+    } catch (error) {
+      Alert.alert('Erro', 'Ocorreu um erro ao apagar a pesquisa.');
     }
   };
 
@@ -52,17 +94,17 @@ export default function ModificarPesquisa() {
 
           <View style={estilos.container}>
             <Text style={estilos.text}>Data</Text>
-              <View style={estilos.containerData}>
-                <TextInput
-                  style={estilos.inputData}
-                  value={data}
-                  onChangeText={setData}
-                  placeholder="DD/MM/AAAA"
-                  maxLength={10}
-                />
-                <View style={estilos.calendar}>
-                  <Icon name="calendar-month" size={28} color="gray" />
-                </View>
+            <View style={estilos.containerData}>
+              <TextInput
+                style={estilos.inputData}
+                value={data}
+                onChangeText={setData}
+                placeholder="DD/MM/AAAA"
+                maxLength={10}
+              />
+              <View style={estilos.calendar}>
+                <Icon name="calendar-month" size={28} color="gray" />
+              </View>
             </View>
           </View>
 
@@ -74,7 +116,7 @@ export default function ModificarPesquisa() {
           </View>
 
           <View style={estilos.containerFooter}>
-          <TouchableOpacity style={estilos.btn} onPress={handleSave}>
+            <TouchableOpacity style={estilos.btn} onPress={handleSave}>
               <Text style={estilos.btnSalvar}>SALVAR</Text>
             </TouchableOpacity>
             <View style={estilos.btnApagar}>
@@ -117,17 +159,17 @@ export default function ModificarPesquisa() {
 const estilos = StyleSheet.create({
   btnSalvar: {
     color: 'white',
-    fontFamily: 'AveriaLibre-Bold'
+    fontFamily: 'AveriaLibre-Bold',
   },
   btn: {
     width: 653,
-    backgroundColor: "#37BD6D",
+    backgroundColor: '#37BD6D',
     textAlign: 'center',
     justifyContent: 'center',
     alignItems: 'center',
     height: 50,
     marginTop: 46,
-    marginBottom: 30
+    marginBottom: 30,
   },
   containerExterno: {
     flex: 1,
@@ -144,8 +186,7 @@ const estilos = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 51,
-    fontFamily: 'AveriaLibre-Regular'
-
+    fontFamily: 'AveriaLibre-Regular',
   },
   inputData: {
     backgroundColor: 'white',
@@ -153,8 +194,7 @@ const estilos = StyleSheet.create({
     justifyContent: 'center',
     height: 51,
     width: 598,
-    fontFamily: 'AveriaLibre-Regular'
-
+    fontFamily: 'AveriaLibre-Regular',
   },
   text: {
     color: 'white',
@@ -171,7 +211,7 @@ const estilos = StyleSheet.create({
     backgroundColor: 'white',
     width: 55,
     height: 51,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   container: {
     marginTop: 13,

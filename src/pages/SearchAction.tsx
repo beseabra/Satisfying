@@ -1,27 +1,30 @@
-import { useNavigation } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
+type SearchActionRouteProp = RouteProp<{ params: { id: string } }, 'params'>;
 
-export default function NewAccount() {
+export default function SearchAction() {
   const navigation = useNavigation();
+  const route = useRoute<SearchActionRouteProp>();
+  const { id } = route.params;
 
   return (
     <View style={styles.container}>
       <View style={styles.body}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('Modificar pesquisa' as never)}>
+          onPress={() => navigation.navigate('Modificar pesquisa' as never, { id } as never)}>
           <Image source={require('../assets/change.png')} />
           <Text style={styles.buttonText}>Modificar</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Rating'  as never)}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Rating' as never)}>
           <Image source={require('../assets/check.png')} />
           <Text style={styles.buttonText}>Coletar os dados</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('Report'  as never)}>
+          onPress={() => navigation.navigate('Report' as never)}>
           <Image source={require('../assets/report.png')} />
           <Text style={styles.buttonText}>Relatório</Text>
         </TouchableOpacity>
@@ -34,13 +37,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#382775',
-  },
-  goBackArrow: {color: '#fff', marginRight: 16},
-
-  headerText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#fff',
   },
   body: {
     flex: 1,
