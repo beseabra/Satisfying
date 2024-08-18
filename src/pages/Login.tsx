@@ -28,7 +28,6 @@ export default function Login() {
         .catch((error) => {
           setError(true);
           Alert.alert('Erro', 'Email e/ou senha inválidos.');
-          console.log(error);
         });
     } else {
       setError(true);

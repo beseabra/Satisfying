@@ -36,7 +36,6 @@ export default function RatingScreen() {
   const { state } = useUserContext();
   const userId = state.userId || ""; 
 
-  console.log('userId', userId);
   
 
   useEffect(() => {

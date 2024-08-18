@@ -1,8 +1,10 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { deleteObject, getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useEffect, useState } from 'react';
 import {
   Alert,
+  Image,
   Modal,
   ScrollView,
   StyleSheet,
@@ -11,9 +13,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Button from '../components/Button';
-import { db } from '../firebase/config';
+import { db, storage } from '../firebase/config';
 import React = require('react');
 
 type ModificarPesquisaRouteProp = RouteProp<{ params: { id: string } }, 'params'>;
@@ -25,6 +28,8 @@ export default function ModificarPesquisa() {
 
   const [nome, setNome] = useState('');
   const [data, setData] = useState('');
+  const [imagem, setImagem] = useState('');
+  const [imagemAnterior, setImagemAnterior] = useState('');
   const [calcell, setCalcell] = useState(false);
 
   useEffect(() => {
@@ -36,6 +41,7 @@ export default function ModificarPesquisa() {
         const pesquisaData = pesquisaSnap.data();
         setNome(pesquisaData.nome);
         setData(pesquisaData.data);
+        setImagemAnterior(pesquisaData.imagem); // URL da imagem atual
       } else {
         Alert.alert('Erro', 'Pesquisa não encontrada.');
         navigation.navigate('Home' as never);
@@ -45,17 +51,72 @@ export default function ModificarPesquisa() {
     fetchPesquisa();
   }, [id]);
 
+  const handleSelectImage = () => {
+    const options = ['Tirar Foto', 'Escolher da Galeria', 'Cancelar'];
+    const cancelButtonIndex = 2;
+
+    Alert.alert(
+      'Selecionar Imagem',
+      'Escolha uma opção:',
+      [
+        { text: 'Tirar Foto', onPress: openCamera },
+        { text: 'Escolher da Galeria', onPress: openGallery },
+        { text: 'Cancelar', style: 'cancel' },
+      ],
+      { cancelable: true }
+    );
+  };
+
+  const openCamera = () => {
+    launchCamera({ mediaType: 'photo' }, (response) => {
+      if (!response.didCancel && !response.errorCode) {
+        const uri = response.assets?.[0]?.uri || '';
+        setImagem(uri);
+      }
+    });
+  };
+
+  const openGallery = () => {
+    launchImageLibrary({ mediaType: 'photo' }, (response) => {
+      if (!response.errorCode) {
+        const uri = response.assets?.[0]?.uri || '';
+        setImagem(uri);
+      }
+    });
+  };
+
   const handleSave = async () => {
     if (nome !== '' && data !== '') {
       try {
         const pesquisaRef = doc(db, 'pesquisas', id);
+        let imageUrl = imagemAnterior;
+
+        if (imagem && imagem !== imagemAnterior) {
+          // Substituir a imagem no Firebase Storage
+          const imageRef = ref(storage, `images/${id}`);
+          const response = await fetch(imagem);
+          const blob = await response.blob();
+
+          await uploadBytes(imageRef, blob);
+          imageUrl = await getDownloadURL(imageRef);
+
+          // Excluindo a imagem anterior, se houver
+          if (imagemAnterior) {
+            const oldImageRef = ref(storage, imagemAnterior);
+            await deleteObject(oldImageRef);
+          }
+        }
+
         await updateDoc(pesquisaRef, {
           nome,
           data,
+          imagem: imageUrl,
         });
         Alert.alert('Sucesso', 'Pesquisa atualizada com sucesso!');
         navigation.navigate('Home' as never);
       } catch (error) {
+        console.log(error);
+        
         Alert.alert('Erro', 'Ocorreu um erro ao atualizar a pesquisa.');
       }
     } else {
@@ -71,6 +132,13 @@ export default function ModificarPesquisa() {
     try {
       const pesquisaRef = doc(db, 'pesquisas', id);
       await deleteDoc(pesquisaRef);
+
+      // Deletar a imagem associada do Storage
+      if (imagemAnterior) {
+        const imageRef = ref(storage, imagemAnterior);
+        await deleteObject(imageRef);
+      }
+
       Alert.alert('Sucesso', 'Pesquisa apagada com sucesso!');
       setCalcell(false);
       navigation.navigate('Home' as never);
@@ -111,9 +179,13 @@ export default function ModificarPesquisa() {
 
           <View style={estilos.container}>
             <Text style={estilos.text}>Imagem</Text>
-            <View style={estilos.containerCamera}>
-              <Icon name="celebration" size={50} color="#C60EB3" />
-            </View>
+            <TouchableOpacity onPress={handleSelectImage} style={estilos.containerCamera}>
+              {imagem ? (
+                <Image source={{ uri: imagem }} style={{ width: 100, height: 100 }} />
+              ) : (
+                <Icon name="photo" size={50} color="#C60EB3" />
+              )}
+            </TouchableOpacity>
           </View>
 
           <View style={estilos.containerFooter}>
@@ -156,6 +228,7 @@ export default function ModificarPesquisa() {
     </ScrollView>
   );
 }
+
 
 const estilos = StyleSheet.create({
   btnSalvar: {

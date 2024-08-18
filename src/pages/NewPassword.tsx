@@ -33,7 +33,6 @@ export default function NewPassword() {
           );
         })
         .catch((error) => {
-          console.log(error);
           Alert.alert('Erro', 'Ocorreu um erro ao tentar redefinir a senha.');
         });
     } else {

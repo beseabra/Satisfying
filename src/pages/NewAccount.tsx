@@ -32,10 +32,8 @@ export default function NewAccount() {
             { text: 'OK', onPress: () => navigation.navigate('Login' as never) }, // Navega para a tela de login ao clicar em "OK"
           ]);
           
-          console.log(userCredential);   
         })
         .catch((error) => {
-          console.log(error);
           Alert.alert('Erro', error.message);
          
         });

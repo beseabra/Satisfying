@@ -1,34 +1,107 @@
-
 import { useNavigation } from '@react-navigation/native';
 import { addDoc, collection } from 'firebase/firestore';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useState } from 'react';
-import { Alert, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ActionSheetIOS, Alert, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Button from '../components/Button';
-import { db } from '../firebase/config';
+import { db, storage } from '../firebase/config';
 import React = require('react');
 
 export default function NovaPesquisa() {
   const navigation = useNavigation();
   const [nome, setNome] = useState('');
   const [data, setData] = useState('');
-  const [imagem, setImagem] = useState(''); // Adicionando o estado da imagem
+  const [imagem, setImagem] = useState('');
   const [error, setError] = useState(false);
 
   const pesquisaRef = collection(db, 'pesquisas');
+
+  const handleSelectImage = () => {
+    const options = ['Tirar Foto', 'Escolher da Galeria', 'Cancelar'];
+    const cancelButtonIndex = 2;
+
+    if (Platform.OS === 'ios') {
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          options,
+          cancelButtonIndex,
+        },
+        (buttonIndex) => {
+          if (buttonIndex === 0) {
+            openCamera();
+          } else if (buttonIndex === 1) {
+            openGallery();
+          }
+        }
+      );
+    } else {
+      // Para Android, você pode implementar uma lógica semelhante com outras bibliotecas ou componentes personalizados.
+      // Aqui, estamos utilizando uma abordagem simplificada.
+      Alert.alert(
+        'Selecionar Imagem',
+        'Escolha uma opção:',
+        [
+          { text: 'Tirar Foto', onPress: openCamera },
+          { text: 'Escolher da Galeria', onPress: openGallery },
+          { text: 'Cancelar', style: 'cancel' },
+        ],
+        { cancelable: true }
+      );
+    }
+  };
+
+  const openCamera = () => {
+    launchCamera({ mediaType: 'photo' }, (response) => {
+      if (response.didCancel) {
+      } else if (response.errorCode) {
+        console.log('ImagePicker Error: ', response.errorMessage);
+      } else {
+        const uri = response.assets?.[0]?.uri || '';
+        setImagem(uri);
+      }
+    });
+  };
+
+  const openGallery = () => {
+    launchImageLibrary({ mediaType: 'photo' }, (response) => {
+     if (response.errorCode) {
+        console.log('ImagePicker Error: ', response.errorMessage);
+      } else {
+        const uri = response.assets?.[0]?.uri || '';
+        setImagem(uri);
+      }
+    });
+  };
 
   const redirectHome = async () => {
     if (!nome || !data || !imagem) {
       setError(true);
       return;
     }
-
+  
     try {
+      // 1. Criar referência no Storage
+      const imageRef = ref(storage, `images/${nome}-${Date.now()}.jpg`);
+  
+      // 2. Converter imagem para blob
+      const response = await fetch(imagem);
+      const blob = await response.blob();
+  
+      // 3. Fazer upload da imagem
+      await uploadBytes(imageRef, blob);
+  
+      // 4. Obter URL de download da imagem
+      const downloadURL = await getDownloadURL(imageRef);
+  
+      // 5. Salvar dados no Firestore com o URL da imagem
       await addDoc(pesquisaRef, {
         nome: nome,
         data: data,
-        imagem: imagem, // Salvando a URL da imagem
+        imagem: downloadURL,
       });
+  
       Alert.alert('Sucesso', 'Pesquisa cadastrada com sucesso!', [
         { text: 'OK', onPress: () => navigation.navigate('Home' as never) },
       ]);
@@ -37,6 +110,7 @@ export default function NovaPesquisa() {
       Alert.alert('Erro', 'Ocorreu um erro ao cadastrar a pesquisa.');
     }
   };
+  
 
   return (
     <ScrollView style={estilos.margem}>
@@ -77,20 +151,18 @@ export default function NovaPesquisa() {
 
           <View style={estilos.container}>
             <Text style={estilos.text}>Imagem</Text>
-            <View style={estilos.containerCamera}>
-              <TextInput
-                style={estilos.camera}
-                value={imagem}
-                onChangeText={setImagem}
-                placeholder="URL da imagem"
-              />
-            </View>
+            <TouchableOpacity onPress={handleSelectImage} style={estilos.containerCamera}>
+              <Text style={estilos.camera}>
+                {imagem ? 'Imagem selecionada' : 'Selecionar Imagem'}
+              </Text>
+            </TouchableOpacity>
             {error && imagem === '' && (
               <Text style={{ color: 'red', fontFamily: 'AveriaLibre-Regular' }}>
-                Preencha a URL da imagem
+                Preencha a imagem
               </Text>
             )}
           </View>
+
           <View style={estilos.containerCadastrar}>
             <Button title="CADASTRAR" onPress={redirectHome} color="#37BD6D" />
           </View>

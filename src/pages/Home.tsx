@@ -68,9 +68,18 @@ export default function Home() {
                   onPress={() =>
                     navigation.navigate('Search Action' as never, { id: pesquisa.id } as never)
                   }>
-                  <Image style={styles.image} source={require('../assets/secomp.png')} />
-                  <Text>{pesquisa.nome}</Text>
-                  <Text>{pesquisa.data}</Text>
+                  <Image
+                    style={styles.image}
+                    source={
+                      pesquisa.imagem
+                        ? { uri: pesquisa.imagem }
+                        : require('../assets/secomp.png')
+                    }
+                  />
+                  <View  style={styles.textContanier}>
+                  <Text  style={styles.text}>{pesquisa.nome}</Text>
+                  <Text style={styles.subText}>{pesquisa.data}</Text>
+                  </View>
                 </TouchableOpacity>
               </View>
             ))}
@@ -85,6 +94,7 @@ export default function Home() {
     </SafeAreaView>
   );
 }
+
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -115,11 +125,24 @@ const styles = StyleSheet.create({
     marginBottom: 58,
   },
   image: {
-    width: 230,
-    height: 200,
+    width: 180,
+    height: 195,
     borderRadius: 10,
   },
   button: {
     fontFamily: 'AveriaLibre-Bold',
+  },
+  text: {
+    fontFamily: 'AveriaLibre-Bold',
+    fontSize: 20,
+    color: 'white',
+  },
+  subText: {
+    fontFamily: 'AveriaLibre-Regular',
+    color: 'white',
+  },
+  textContanier: {
+    alignItems: 'center',
+    color: 'white',
   },
 });
