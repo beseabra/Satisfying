@@ -1,5 +1,8 @@
-import React, {useState} from 'react';
+
+import { sendPasswordResetEmail } from 'firebase/auth';
+import { useState } from 'react';
 import {
+  Alert,
   KeyboardAvoidingView,
   SafeAreaView,
   ScrollView,
@@ -9,6 +12,8 @@ import {
   View,
 } from 'react-native';
 import Button from '../components/Button';
+import { auth_mod } from '../firebase/config';
+import React = require('react');
 
 export default function NewPassword() {
   const [email, setEmail] = useState('');
@@ -20,18 +25,29 @@ export default function NewPassword() {
     setError(!isValidEmail);
 
     if (isValidEmail) {
-      console.log('Email enviado com sucesso');
+      sendPasswordResetEmail(auth_mod, email)
+        .then(() => {
+          Alert.alert(
+            'Sucesso',
+            'Um link para redefinir sua senha foi enviado para o e-mail fornecido.',
+          );
+        })
+        .catch((error) => {
+          console.log(error);
+          Alert.alert('Erro', 'Ocorreu um erro ao tentar redefinir a senha.');
+        });
     } else {
       setError(true);
+      Alert.alert('Erro', 'Por favor, insira um e-mail válido.');
     }
   }
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <KeyboardAvoidingView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
+      <KeyboardAvoidingView style={{ flex: 1 }}>
         <ScrollView
           style={styles.container}
-          contentContainerStyle={{flexGrow: 1}}>
+          contentContainerStyle={{ flexGrow: 1 }}>
           <View style={styles.containerInput}>
             <Text style={styles.textInput}>Email</Text>
             <TextInput
@@ -42,7 +58,7 @@ export default function NewPassword() {
               keyboardType="email-address"
             />
             {error && (
-              <Text style={{color: 'red'}}>E-mail parece ser inválido</Text>
+              <Text style={{ color: 'red' }}>E-mail parece ser inválido</Text>
             )}
           </View>
 

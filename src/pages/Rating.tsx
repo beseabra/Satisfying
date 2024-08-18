@@ -1,5 +1,9 @@
-import React, {useState} from 'react';
+
+import { RouteProp, useRoute } from '@react-navigation/native';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
 import {
+  Alert,
   Image,
   Modal,
   SafeAreaView,
@@ -9,34 +13,77 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { useUserContext } from '../contexts/UserContext';
+import { db } from '../firebase/config';
+import React = require('react');
 
 const listImages = [
-  {value: 1, source: require('../assets/rate1.png')},
-  {value: 2, source: require('../assets/rate2.png')},
-  {value: 3, source: require('../assets/rate3.png')},
-  {value: 4, source: require('../assets/rate4.png')},
-  {value: 5, source: require('../assets/rate5.png')},
+  { value: 1, source: require('../assets/rate1.png') },
+  { value: 2, source: require('../assets/rate2.png') },
+  { value: 3, source: require('../assets/rate3.png') },
+  { value: 4, source: require('../assets/rate4.png') },
+  { value: 5, source: require('../assets/rate5.png') },
 ];
+
+export type SearchActionRouteProp = RouteProp<{ params: { id: string } }, 'params'>;
 
 export default function RatingScreen() {
   const [rating, setRating] = useState<number | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
 
-  function handleRating(value: number) {
+  const route = useRoute<SearchActionRouteProp>();
+  const { id } = route.params;
+  const { state } = useUserContext();
+  const userId = state.userId || ""; 
+
+  console.log('userId', userId);
+  
+
+  useEffect(() => {
+    checkIfUserHasRated();
+  }, []);
+
+  const checkIfUserHasRated = async () => {
+    const ratingDocRef = doc(db, 'pesquisas', id, 'avaliacoes', userId);
+    const ratingDoc = await getDoc(ratingDocRef);
+
+    if (ratingDoc.exists()) {
+      Alert.alert('Aviso', 'Você já avaliou essa pesquisa.');
+      setRating(ratingDoc.data().rating);
+    }
+  };
+
+  const handleRating = async (value: number) => {
+    if (rating !== null) {
+      Alert.alert('Aviso', 'Você já avaliou essa pesquisa.');
+      return;
+    }
+
     setRating(value);
     setModalVisible(true);
     setTimeout(() => {
       setModalVisible(false);
     }, 3000);
 
-    console.log('Rating:', value);
-  }
+    const ratingDocRef = doc(db, 'pesquisas', id, 'avaliacoes', userId);
+
+    try {
+      await setDoc(ratingDocRef, {
+        rating: value,
+        userId: userId,
+      });
+      Alert.alert('Sucesso', 'Avaliação enviada com sucesso!');
+    } catch (error) {
+      Alert.alert('Erro', 'Ocorreu um erro ao enviar sua avaliação.');
+      console.error('Erro ao enviar avaliação:', error);
+    }
+  };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       <ScrollView
-        style={{backgroundColor: '#372775'}}
-        contentContainerStyle={{flexGrow: 1}}>
+        style={{ backgroundColor: '#372775' }}
+        contentContainerStyle={{ flexGrow: 1 }}>
         <View style={styles.container}>
           <View style={styles.containerHeader}>
             <Text style={styles.sectionTitle}>Satisfying.you</Text>

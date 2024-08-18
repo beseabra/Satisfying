@@ -1,22 +1,40 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
-import {ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
+
+import { useNavigation } from '@react-navigation/native';
+import { addDoc, collection } from 'firebase/firestore';
+import { useState } from 'react';
+import { Alert, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Button from '../components/Button';
+import { db } from '../firebase/config';
+import React = require('react');
 
 export default function NovaPesquisa() {
   const navigation = useNavigation();
   const [nome, setNome] = useState('');
   const [data, setData] = useState('');
+  const [imagem, setImagem] = useState(''); // Adicionando o estado da imagem
   const [error, setError] = useState(false);
 
-  const redirectHome = () => {
-    if (!nome || !data) {
-      setError(true);
+  const pesquisaRef = collection(db, 'pesquisas');
 
+  const redirectHome = async () => {
+    if (!nome || !data || !imagem) {
+      setError(true);
       return;
-    } else {
-      navigation.navigate('Home' as never);
+    }
+
+    try {
+      await addDoc(pesquisaRef, {
+        nome: nome,
+        data: data,
+        imagem: imagem, // Salvando a URL da imagem
+      });
+      Alert.alert('Sucesso', 'Pesquisa cadastrada com sucesso!', [
+        { text: 'OK', onPress: () => navigation.navigate('Home' as never) },
+      ]);
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Erro', 'Ocorreu um erro ao cadastrar a pesquisa.');
     }
   };
 
@@ -33,8 +51,8 @@ export default function NovaPesquisa() {
               placeholder="Nome"
             />
             {error && nome === '' && (
-              <Text style={{color: 'red', fontFamily: 'AveriaLibre-Regular'}}>
-                Preencha no nome da pesquisa
+              <Text style={{ color: 'red', fontFamily: 'AveriaLibre-Regular' }}>
+                Preencha o nome da pesquisa
               </Text>
             )}
           </View>
@@ -51,7 +69,7 @@ export default function NovaPesquisa() {
               <Icon name="calendar-month" size={28} color="gray" />
             </View>
             {error && data === '' && (
-              <Text style={{color: 'red', fontFamily: 'AveriaLibre-Regular'}}>
+              <Text style={{ color: 'red', fontFamily: 'AveriaLibre-Regular' }}>
                 Preencha a data
               </Text>
             )}
@@ -60,8 +78,18 @@ export default function NovaPesquisa() {
           <View style={estilos.container}>
             <Text style={estilos.text}>Imagem</Text>
             <View style={estilos.containerCamera}>
-              <Text style={estilos.camera}>Câmera/Galeria de imagens</Text>
+              <TextInput
+                style={estilos.camera}
+                value={imagem}
+                onChangeText={setImagem}
+                placeholder="URL da imagem"
+              />
             </View>
+            {error && imagem === '' && (
+              <Text style={{ color: 'red', fontFamily: 'AveriaLibre-Regular' }}>
+                Preencha a URL da imagem
+              </Text>
+            )}
           </View>
           <View style={estilos.containerCadastrar}>
             <Button title="CADASTRAR" onPress={redirectHome} color="#37BD6D" />
@@ -125,6 +153,6 @@ const estilos = StyleSheet.create({
     fontFamily: 'AveriaLibre-Bold',
   },
   containerCadastrar: {
-    marginTop: 40
-  }
+    marginTop: 40,
+  },
 });
