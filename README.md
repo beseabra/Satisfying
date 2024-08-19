@@ -67,3 +67,19 @@ To learn more about React Native, take a look at the following resources:
 - [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
 - [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
 - [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+
+
+Victor Hugo Kendi Takehana
+RA: 2418380
+
+Daniel Rodrigues Pereira
+RA: 1998820
+
+Silvio Jorge de Oliveira Filho
+RA: 2052261
+
+Gustavo Baccan
+RA: 2052059
+
+Bernardo dos reis Guedes Seabra
+RA: 2209411
